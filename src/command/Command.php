@@ -80,18 +80,6 @@ abstract class Command implements CommandInterface
     abstract public function getArguments(): array;
 
     /**
-     * 初始化命令
-     *
-     * @param string|null $name
-     */
-    public function __construct(string $name = null)
-    {
-        $name === null || $this->setName($name);
-
-        $this->configure();
-    }
-
-    /**
      * @inheritDoc
      */
     public function setName(string $name): void
@@ -204,12 +192,5 @@ abstract class Command implements CommandInterface
     public function getConcrete(InputInterface $input): Concrete
     {
         return $this->getDefinitionWithApplication(true)->resolve($input);
-    }
-
-    /**
-     * 初始化配置
-     */
-    protected function configure(): void
-    {
     }
 }
