@@ -87,14 +87,6 @@ interface CommandInterface
     public function getDefinition(): Definition;
 
     /**
-     * 获取完全（合并应用程序）输入定义
-     *
-     * @param bool $withParameters
-     * @return Definition
-     */
-    public function getDefinitionWithApplication(bool $withParameters): Definition;
-
-    /**
      * 获取输入实体
      *
      * @param InputInterface $input

@@ -69,14 +69,14 @@ composer require 7csn/console
 
 * 列出命令：list
 
-  > 应用程序默认命令，用于列出指定命名空间下的命令
+  > 应用程序默认命令，用于列出指定前缀名的命令
 
   示例：
   ```shell
   # 列出全部命令
   > php index.php list
     
-  # 列出名称为“demo”或者名称以“demo.”开头的命令
+  # 列出以“demo”开头的命令
   > php index.php list demo
   ```
 

@@ -64,4 +64,12 @@ interface InputInterface
      * @return string[]|null
      */
     public function getOptionValues(Option $option): ?array;
+
+    /**
+     * 生成新的输入对象
+     *
+     * @param int $start
+     * @return Input
+     */
+    public function clone(int $start = 0): self;
 }

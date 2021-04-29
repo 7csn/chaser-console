@@ -58,11 +58,11 @@ class Descriptor implements DescriptorInterface
     /**
      * @inheritDoc
      */
-    public function listCommands(Application $application, string $namespace = null): void
+    public function listCommands(Application $application, string $prefix = null): void
     {
         $this->output->writeln();
 
-        $commands = $application->getCommands($namespace);
+        $commands = $application->getCommands($prefix);
 
         if (empty($commands)) {
             $this->output->writeln('<comment>No commands</comment>');
@@ -90,7 +90,7 @@ class Descriptor implements DescriptorInterface
             $this->output->writeln('  ' . $usage);
         }
 
-        $definition = $command->getDefinitionWithApplication(false);
+        $definition = $command->getDefinition();
         if ($definition->getOptions() || $definition->getParameters()) {
             $this->describeDefinition($definition);
         }

@@ -30,12 +30,12 @@ interface DescriptorInterface
     public function listBaseCommands(Application $application): void;
 
     /**
-     * 展示指定命名空间下的指令
+     * 根据前缀名展示指令
      *
      * @param Application $application
-     * @param string|null $namespace
+     * @param string $prefix
      */
-    public function listCommands(Application $application, string $namespace = null): void;
+    public function listCommands(Application $application, string $prefix = ''): void;
 
     /**
      * 描述命令

@@ -37,7 +37,7 @@ class HelpCommand extends Command
     public function getArguments(): array
     {
         return [
-            new Parameter('command_name', 0, 'The command name', $this->getName())
+            new Parameter('command', 0, 'The command name', $this->getName())
         ];
     }
 
@@ -48,7 +48,9 @@ class HelpCommand extends Command
     {
         $descriptor = new Descriptor($output);
         $concrete = $this->getConcrete($input);
-        $command = $this->getApplication()->get($concrete->getParameter('command_name'));
+        $name = $concrete->getParameter('command');
+        $application = $this->getApplication();
+        $command = $application->get($name);
         $descriptor->describeCommand($command);
         return 0;
     }

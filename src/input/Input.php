@@ -144,9 +144,19 @@ class Input implements InputInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function clone(int $start = 0): self
+    {
+        $tokens = $start === 0 ? $this->tokens : array_slice($this->tokens, $start);
+
+        return new self($tokens);
+    }
+
+    /**
      * 解析参数
      */
-    protected function parse(): void
+    private function parse(): void
     {
         $this->parsing = $this->tokens;
         while (null !== $token = array_shift($this->parsing)) {

@@ -166,31 +166,8 @@ abstract class Command implements CommandInterface
     /**
      * @inheritDoc
      */
-    public function getDefinitionWithApplication(bool $withParameters): Definition
-    {
-        $definition = $this->getDefinition();
-
-        if ($this->application === null) {
-            return clone $definition;
-        }
-
-        $appliedDefinition = $this->application->getDefinition($withParameters);
-        $newDefinition = new Definition();
-
-        $newDefinition->setParameters($appliedDefinition->getParameters());
-        $newDefinition->addParameters($definition->getParameters());
-
-        $newDefinition->setOptions($definition->getOptions());
-        $newDefinition->addOptions($appliedDefinition->getOptions());
-
-        return $newDefinition;
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function getConcrete(InputInterface $input): Concrete
     {
-        return $this->getDefinitionWithApplication(true)->resolve($input);
+        return $this->getDefinition()->resolve($input);
     }
 }

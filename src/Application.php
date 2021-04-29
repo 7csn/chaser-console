@@ -15,7 +15,6 @@ use chaser\console\output\Formatter;
 use chaser\console\output\Output;
 use chaser\console\output\OutputInterface;
 use chaser\console\argument\Option;
-use chaser\console\argument\Parameter;
 use Throwable;
 
 /**
@@ -50,13 +49,6 @@ class Application
      * @var string
      */
     private string $defaultCommand;
-
-    /**
-     * 命令参数
-     *
-     * @var Parameter
-     */
-    private Parameter $commandParameter;
 
     /**
      * 初始化应用程序
@@ -122,8 +114,7 @@ class Application
             $input = new Input();
         }
 
-        $hasCommand = $input->hasParameter(0);
-        $concrete = $this->getDefinition($hasCommand)->resolve($input);
+        $concrete = $this->getDefinition()->resolve($input);
 
         if ($output === null) {
             $output = new Output(new Formatter());
@@ -131,12 +122,10 @@ class Application
 
         $this->outputSetting($concrete, $output);
 
-        if ($hasCommand) {
+        if ($input->hasParameter(0)) {
             try {
-                $commandParameterName = $this->getCommandParameter()->getName();
-                $commandName = $concrete->getParameter($commandParameterName);
-                $command = $this->get($commandName);
-                $code = $command->run($input, $output);
+                $command = $this->get($input->getParameterValue(0));
+                $code = $command->run($input->clone(1), $output);
                 return self::normalizeCode($code);
             } catch (Throwable $exception) {
                 return $this->exception($exception, $output);
@@ -169,32 +158,16 @@ class Application
     }
 
     /**
-     * 获取指令列表
+     * 获取自定义指令列表
      *
-     * @param string|null $namespace
+     * @param string $prefix
      * @return CommandInterface[]
      */
-    public function getCommands(string $namespace = null): array
+    public function getCommands(string $prefix = ''): array
     {
-        $command = $this->baseCommands + $this->commands;
-
-        return $namespace === null || $namespace === ''
-            ? $command
-            : array_filter(
-                $command,
-                fn($name) => $name === $namespace || str_starts_with($name, $namespace . '.'),
-                ARRAY_FILTER_USE_KEY
-            );
-    }
-
-    /**
-     * 获取命令参数
-     *
-     * @return Parameter
-     */
-    public function getCommandParameter(): Parameter
-    {
-        return $this->commandParameter ??= new Parameter('command', Parameter::REQUIRED, 'The command to execute');
+        return $prefix === ''
+            ? $this->commands
+            : array_filter($this->commands, fn($name) => str_starts_with($name, $prefix), ARRAY_FILTER_USE_KEY);
     }
 
     /**
@@ -203,17 +176,11 @@ class Application
      * @param bool $withParameters
      * @return Definition
      */
-    public function getDefinition(bool $withParameters): Definition
+    public function getDefinition(): Definition
     {
-        $arguments = [
-            new Option('output', 'o', Option::OPTIONAL, "Message output: 0(decorate tags), 1(strip tags), 2(raw output), 3(no output)", '0'),
-        ];
-
-        if ($withParameters) {
-            array_unshift($arguments, $this->getCommandParameter());
-        }
-
-        return new Definition($arguments);
+        return new Definition([
+            new Option('output', 'o', Option::OPTIONAL, "Message output: 0(decorate tags), 1(strip tags), 2(raw output), 3(no output)", '0')
+        ]);
     }
 
     /**

@@ -37,7 +37,7 @@ class ListCommand extends Command
     public function getArguments(): array
     {
         return [
-            new Parameter('namespace', 0, 'The namespace name')
+            new Parameter('prefix', 0, 'The prefix of command name', '')
         ];
     }
 
@@ -47,7 +47,10 @@ class ListCommand extends Command
     public function run(InputInterface $input, OutputInterface $output): int
     {
         $descriptor = new Descriptor($output);
-        $descriptor->listCommands($this->getApplication(), $this->getConcrete($input)->getParameter('namespace'));
+        $concrete = $this->getConcrete($input);
+        $prefix = $concrete->getParameter('prefix');
+        $application = $this->getApplication();
+        $descriptor->listCommands($application, $prefix);
         return 0;
     }
 }
