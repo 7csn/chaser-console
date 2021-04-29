@@ -53,18 +53,18 @@ composer require 7csn/console
 
 * 消息输出设置
 
-  > 应用程序选项，名称为”output“，快捷方式为”o“，对所有命令有效
+  > 应用程序选项，名称为”output“，快捷方式为”O“，对所有命令有效
   >
   > 取值（默认 0）：0（装饰标签）、1（去除标签）、2（原样输出）、3（不输出）
   >
   > 使用：
   > * --output=值
   > * --output 值
-  > * -o 值
+  > * -O 值
 
   示例：
   ```shell
-  > php index.php -o 1
+  > php index.php -O 1
   ```
 
 * 列出命令：list
