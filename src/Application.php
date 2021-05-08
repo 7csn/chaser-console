@@ -165,9 +165,12 @@ class Application
      */
     public function getCommands(string $prefix = ''): array
     {
-        return $prefix === ''
+        $commands = $prefix === ''
             ? $this->commands
             : array_filter($this->commands, fn($name) => str_starts_with($name, $prefix), ARRAY_FILTER_USE_KEY);
+        ksort($commands);
+
+        return $commands;
     }
 
     /**
@@ -179,7 +182,7 @@ class Application
     public function getDefinition(): Definition
     {
         return new Definition([
-            new Option('output', 'O', Option::OPTIONAL, "Message output: 0(decorate tags), 1(strip tags), 2(raw output), 3(no output)", '0')
+            new Option('output', 'O', Option::OPTIONAL, "Output setting: 0(decorate tags), 1(strip tags), 2(raw output), 3(no output)", '0')
         ]);
     }
 
