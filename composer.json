@@ -12,7 +12,6 @@
       "email": "1479672753@qq.com"
     }
   ],
-  "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
       "chaser\\console\\": "src/"
