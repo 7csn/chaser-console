@@ -230,7 +230,7 @@ class Application
      */
     private function exception(Throwable $exception, OutputInterface $output): int
     {
-        $output->writeln(sprintf("<error>\nException: %s</error>", $exception->getMessage()));
+        $output->writeln(sprintf("<error>\nException: %s-%d\n           %s</error>", $exception->getFile(), $exception->getLine(), $exception->getMessage()));
         return self::normalizeCode($exception->getCode(), true);
     }
 
